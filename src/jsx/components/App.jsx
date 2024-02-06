@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 
-import Description from './description/Description';
-import './App.css';
-import Options from './options/Options';
-import Feedback from './feedback/Feedback';
+import { Description } from './description/Description';
+import { Options } from './options/Options';
+import { Feedback } from './feedback/Feedback';
 import { KEY_LOCALSTORAGE } from '../localstorage/key-storage';
 
 const App = () => {
@@ -39,7 +38,7 @@ const App = () => {
   }, []);
 
   return (
-    <div>
+    <div className="container">
       <Description />
       <Options
         onReview={handleReview}
