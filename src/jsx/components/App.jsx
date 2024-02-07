@@ -3,7 +3,9 @@ import { useState, useEffect } from 'react';
 import { Description } from './description/Description';
 import { Options } from './options/Options';
 import { Feedback } from './feedback/Feedback';
-import { KEY_LOCALSTORAGE } from '../localstorage/key-storage';
+
+import { KEY_LOCALSTORAGE } from '../constants';
+import { CAFE_TITLE, NOTIFICATION, FEEDBACK_INVITATION } from '../constants';
 
 const App = () => {
   const initialReviews = {
@@ -39,13 +41,13 @@ const App = () => {
 
   return (
     <div className="container">
-      <Description />
+      <Description invitation={FEEDBACK_INVITATION}>{CAFE_TITLE}</Description>
       <Options
         onReview={handleReview}
         onReset={handleReset}
         reviews={reviews}
       />
-      <Feedback reviews={reviews} />
+      <Feedback reviews={reviews}>{NOTIFICATION}</Feedback>
     </div>
   );
 };

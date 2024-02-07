@@ -4,7 +4,7 @@ import { Notification } from '../notification/Notification';
 import { FeedbackList } from './FeedbackList';
 import { totalFeedback, positivePercents } from '../feedback-utils/utils';
 
-export const Feedback = ({ reviews }) => {
+export const Feedback = ({ reviews, children }) => {
   return (
     <div>
       {totalFeedback(reviews) > 0 ? (
@@ -16,7 +16,7 @@ export const Feedback = ({ reviews }) => {
           </p>
         </>
       ) : (
-        <Notification>No feedback given yet</Notification>
+        <Notification>{children}</Notification>
       )}
     </div>
   );
