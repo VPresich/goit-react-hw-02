@@ -3,41 +3,36 @@ import { useState, useEffect } from 'react';
 import { Description } from './description/Description';
 import { Options } from './options/Options';
 import { Feedback } from './feedback/Feedback';
+import { saveToLocalStorage, getInitial } from '../utils/local-storage';
+import { getStatistics } from '../utils/feedback-satistics';
+import { Notification } from './notification/Notification';
 
-import { KEY_LOCALSTORAGE } from '../constants';
-import { CAFE_TITLE, NOTIFICATION, FEEDBACK_INVITATION } from '../constants';
+import {
+  CAFE_TITLE,
+  FEEDBACK_INVITATION,
+  NOTIFICATION,
+  INIT_REVIEWS,
+} from '../utils/constants';
 
-const App = () => {
-  const initialReviews = {
-    good: 0,
-    neutral: 0,
-    bad: 0,
-  };
-
-  const [reviews, setReviews] = useState(initialReviews);
+export const App = () => {
+  const [reviews, setReviews] = useState(getInitial());
+  const [statistics, calcStatistics] = useState(getStatistics(reviews));
 
   const handleReview = type => {
-    setReviews(prevReviews => {
-      const newReviews = {
-        ...prevReviews,
-        [type]: prevReviews[type] + 1,
-      };
-      localStorage.setItem(KEY_LOCALSTORAGE, JSON.stringify(newReviews));
-      return newReviews;
-    });
+    setReviews(prevReviews => ({
+      ...prevReviews,
+      [type]: prevReviews[type] + 1,
+    }));
   };
 
   const handleReset = () => {
-    setReviews(initialReviews);
-    localStorage.removeItem(KEY_LOCALSTORAGE);
+    setReviews(INIT_REVIEWS);
   };
 
   useEffect(() => {
-    const storedReviews = JSON.parse(localStorage.getItem(KEY_LOCALSTORAGE));
-    if (storedReviews) {
-      setReviews(storedReviews);
-    }
-  }, []);
+    saveToLocalStorage(reviews);
+    calcStatistics(getStatistics(reviews));
+  }, [reviews]);
 
   return (
     <div className="container">
@@ -45,11 +40,13 @@ const App = () => {
       <Options
         onReview={handleReview}
         onReset={handleReset}
-        reviews={reviews}
+        isResetBtn={statistics.total > 0}
       />
-      <Feedback reviews={reviews}>{NOTIFICATION}</Feedback>
+      {statistics.total > 0 ? (
+        <Feedback reviews={reviews} statistics={statistics}></Feedback>
+      ) : (
+        <Notification>{NOTIFICATION}</Notification>
+      )}
     </div>
   );
 };
-
-export default App;
