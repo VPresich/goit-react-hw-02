@@ -1,4 +1,4 @@
-.option-button {
+.button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -15,7 +15,8 @@
   transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
     color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.option-button:hover {
+
+.button:hover {
   border: none;
   color: var(--section-bgr-color);
   background-color: var(--accent-color);
