@@ -16,7 +16,6 @@ import {
 
 export const App = () => {
   const [reviews, setReviews] = useState(getInitial());
-  const [statistics, calcStatistics] = useState(getStatistics(reviews));
 
   const handleReview = type => {
     setReviews(prevReviews => ({
@@ -31,8 +30,9 @@ export const App = () => {
 
   useEffect(() => {
     saveToLocalStorage(reviews);
-    calcStatistics(getStatistics(reviews));
   }, [reviews]);
+
+  const statistics = getStatistics(reviews);
 
   return (
     <div className="container">
